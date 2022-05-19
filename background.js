@@ -9,6 +9,7 @@ const bg = p => {
 	]
 	let colors = ['#E56399', '#0D2648', '#035E7B', '#93C6D6', '#eeeeee']
 	let background
+	let mouse_idle = 0
 
 	class Particle {
 		constructor() {
@@ -87,7 +88,7 @@ const bg = p => {
 			p.stroke(this.c)
 			p.strokeWeight(this.w)
 			p.line(this.l * p.pow(0.85, p.max(30 - this.life / 2, 1)), 0,
-			 this.l, 0)
+			 this.l * p.pow(0.85, p.max(20 - this.life / 2, 1)), 0)
 			p.pop()
 			this.life--
 		}
@@ -146,6 +147,14 @@ const bg = p => {
 		if(p.frameCount % 120 == 0) objects.push(new Circle())
 
 		objects = objects.filter(o => o.life > 0)
+
+		if(p.movedX ==0 && p.movedY == 0) {
+			mouse_idle++
+			if(mouse_idle > 120) p.noCursor()
+		} else {
+			mouse_idle = 0
+			p.cursor()
+		}
 	}
 
 	p.updateValues = () => {
