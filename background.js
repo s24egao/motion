@@ -1,11 +1,11 @@
 const bg = p => {
 	let objects = []
 	let values = [
-		{ v: 0, target: 0, random_max: 1000, colddown: 30},
-		{ v: 0, target: 0, random_max: 1000, colddown: 30},
-		{ v: 0, target: 0, random_max: 800, colddown: 30},
-		{ v: 0, target: 0, random_max: p.HALF_PI, colddown: 30},
-		{ v: 0, target: 0, random_max: p.PI, colddown: 30}
+		{ v: 0, a: 0, target: 0, random_max: 1000, colddown: 30},
+		{ v: 0, a: 0, target: 0, random_max: 1000, colddown: 30},
+		{ v: 0, a: 0, target: 0, random_max: 800, colddown: 30},
+		{ v: 0, a: 0, target: 0, random_max: p.HALF_PI, colddown: 30},
+		{ v: 0, a: 0, target: 0, random_max: p.PI, colddown: 30}
 	]
 	let colors = ['#E56399', '#0D2648', '#035E7B', '#93C6D6', '#eeeeee']
 	let background
@@ -159,7 +159,10 @@ const bg = p => {
 
 	p.updateValues = () => {
 		for(let value of values) {
-			value.v = p.lerp(value.v, value.target, 0.05)
+			// value.v = p.lerp(value.v, value.target, 0.05)
+			value.a *= 0.9
+			value.a += p.norm(value.target - value.v, 0, 200)
+			value.v += value.a
 			value.colddown--
 			if(value.colddown <= 0) {
 				value.target += p.random(-value.random_max, value.random_max)
